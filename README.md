@@ -1,5 +1,11 @@
 # Database Package
 
+<a href="https://gitpod.io/#https://github.com/dracory/database" style="float:right:"><img src="https://gitpod.io/button/open-in-gitpod.svg" alt="Open in Gitpod" loading="lazy"></a>
+
+[![Tests Status](https://github.com/dracory/database/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/dracory/database/actions/workflows/tests.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/dracory/database)](https://goreportcard.com/report/github.com/dracory/database)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/dracory/database)](https://pkg.go.dev/github.com/dracory/database)
+
 This package provides database interaction functionalities for the Dracory
 framework. It offers a set of tools for interacting with various database systems.
 
