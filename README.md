@@ -1,13 +1,29 @@
-# Database Package
+# Database Module
 
 <a href="https://gitpod.io/#https://github.com/dracory/database" style="float:right:"><img src="https://gitpod.io/button/open-in-gitpod.svg" alt="Open in Gitpod" loading="lazy"></a>
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/dracory/database.svg)](https://pkg.go.dev/github.com/dracory/database)
 [![Tests Status](https://github.com/dracory/database/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/dracory/database/actions/workflows/tests.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/dracory/database)](https://goreportcard.com/report/github.com/dracory/database)
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/dracory/database)](https://pkg.go.dev/github.com/dracory/database)
 
-This package provides database interaction functionalities for the Dracory
-framework. It offers a set of tools for interacting with various database systems.
+A standalone, lightweight Go module for database interactions with support
+for multiple database systems. This module provides a clean, idiomatic API for
+common database operations while being easy to integrate into any Go project.
+
+## Installation
+
+```bash
+go get github.com/dracory/database
+```
+
+## Features
+
+- Support for multiple database systems
+- Clean, idiomatic Go API
+- Context-aware operations
+- Connection pooling
+- Transaction support
+- Extensible design
 
 ## License
 

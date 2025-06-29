@@ -2,5 +2,5 @@
 //
 // The package is imported like this:
 //
-//	import "github.com/gouniverse/base/database"
+//	import "github.com/dracory/database"
 package database
