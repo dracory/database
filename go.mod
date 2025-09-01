@@ -3,7 +3,6 @@ module github.com/dracory/database
 go 1.24.0
 
 require (
-	github.com/gouniverse/maputils v0.7.0
 	github.com/spf13/cast v1.9.2
 	modernc.org/sqlite v1.38.0
 )

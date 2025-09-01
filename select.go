@@ -3,7 +3,7 @@ package database
 import (
 	"errors"
 
-	"github.com/gouniverse/maputils"
+	"github.com/spf13/cast"
 )
 
 // SelectToMapAny executes a SQL query in the given context and returns a slice of maps,
@@ -118,9 +118,8 @@ func SelectToMapString(ctx QueryableContext, sqlStr string, args ...any) ([]map[
 	listMapString := []map[string]string{}
 
 	// Iterate over the list of maps and convert each map from map[string]any to map[string]string.
-	// This is done by using the maputils.MapStringAnyToMapStringString() function.
 	for i := range listMapAny {
-		mapString := maputils.MapStringAnyToMapStringString(listMapAny[i])
+		mapString := cast.ToStringMapString(listMapAny[i])
 		listMapString = append(listMapString, mapString)
 	}
 
