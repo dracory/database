@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
+	_ "github.com/glebarez/sqlite"
 	"github.com/spf13/cast"
-	_ "modernc.org/sqlite"
 )
 
 func TestSelectToMapAny(t *testing.T) {

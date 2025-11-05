@@ -16,7 +16,7 @@ import (
 // Drivers:
 // - sqlite add the following includes:
 // ```
-// _ "modernc.org/sqlite"
+// _ "github.com/glebarez/sqlite"
 // ```
 // - mysql add the following includes:
 // ```

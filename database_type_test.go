@@ -6,7 +6,7 @@ import (
 	"errors"
 	"testing"
 
-	_ "modernc.org/sqlite"
+	_ "github.com/glebarez/sqlite"
 )
 
 // initSqliteDB creates a new SQLite database connection in memory.
