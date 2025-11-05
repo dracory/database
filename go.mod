@@ -1,6 +1,6 @@
 module github.com/dracory/database
 
-go 1.24.0
+go 1.25
 
 require (
 	github.com/glebarez/sqlite v1.11.0
