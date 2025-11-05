@@ -1,10 +1,12 @@
-package database
+package database_test
 
 import (
 	"context"
 	"database/sql"
 	"errors"
 	"testing"
+
+	database "github.com/dracory/database"
 
 	_ "modernc.org/sqlite"
 )
@@ -16,8 +18,8 @@ import (
 // - error: the error if any
 func initSqliteDB() (*sql.DB, error) {
 	// Create a new database connection in memory
-	db, err := Open(Options().
-		SetDatabaseType(DATABASE_TYPE_SQLITE).
+	db, err := database.Open(database.Options().
+		SetDatabaseType(database.DATABASE_TYPE_SQLITE).
 		SetDatabaseHost("").
 		SetDatabasePort("").
 		SetDatabaseName(":memory:").
@@ -45,9 +47,9 @@ func TestDatabaseTypeFromDB(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	dbType := DatabaseType(db)
+	dbType := database.DatabaseType(db)
 
-	if dbType != DATABASE_TYPE_SQLITE {
+	if dbType != database.DATABASE_TYPE_SQLITE {
 		t.Fatalf("Expected Debug [%v], received [%v]", "sqlite", dbType)
 	}
 }
@@ -65,9 +67,9 @@ func TestDatabaseTypeFromTx(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	dbType := DatabaseType(tx)
+	dbType := database.DatabaseType(tx)
 
-	if dbType != DATABASE_TYPE_SQLITE {
+	if dbType != database.DATABASE_TYPE_SQLITE {
 		t.Fatalf("Expected Debug [%v], received [%v]", "sqlite", dbType)
 	}
 }
@@ -85,9 +87,9 @@ func TestDatabaseTypeFromConn(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	dbType := DatabaseType(conn)
+	dbType := database.DatabaseType(conn)
 
-	if dbType != DATABASE_TYPE_SQLITE {
+	if dbType != database.DATABASE_TYPE_SQLITE {
 		t.Fatalf("Expected Debug [%v], received [%v]", "sqlite", dbType)
 	}
 }

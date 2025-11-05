@@ -1,8 +1,10 @@
-package database
+package database_test
 
 import (
 	"context"
 	"testing"
+
+	database "github.com/dracory/database"
 )
 
 func TestExecute(t *testing.T) {
@@ -19,7 +21,7 @@ func TestExecute(t *testing.T) {
 	}()
 
 	// Test nil querier error
-	_, err = Execute(Context(context.Background(), nil), "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT)")
+	_, err = database.Execute(database.Context(context.Background(), nil), "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT)")
 	if err == nil {
 		t.Error("Expected error for nil querier")
 	} else if err.Error() != "querier (db/tx/conn) is nil" {
@@ -27,7 +29,7 @@ func TestExecute(t *testing.T) {
 	}
 
 	// Test successful execution
-	_, err = Execute(Context(context.Background(), db), "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT)")
+	_, err = database.Execute(database.Context(context.Background(), db), "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT)")
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}

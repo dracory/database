@@ -1,8 +1,10 @@
-package database
+package database_test
 
 import (
 	"context"
 	"testing"
+
+	database "github.com/dracory/database"
 )
 
 func TestQuery(t *testing.T) {
@@ -23,7 +25,7 @@ func TestQuery(t *testing.T) {
 	}
 
 	// Test nil querier error
-	_, err = Query(Context(context.Background(), nil), "SELECT * FROM users")
+	_, err = database.Query(database.Context(context.Background(), nil), "SELECT * FROM users")
 
 	if err == nil {
 		t.Error("Expected error for nil querier")
@@ -32,7 +34,7 @@ func TestQuery(t *testing.T) {
 	}
 
 	// Test successful query
-	rows, err := Query(Context(context.Background(), db), "SELECT * FROM users")
+	rows, err := database.Query(database.Context(context.Background(), db), "SELECT * FROM users")
 
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
@@ -61,7 +63,7 @@ func TestQuery(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to delete data: %v", err)
 	}
-	rows, err = Query(Context(context.Background(), db), "SELECT * FROM users")
+	rows, err = database.Query(database.Context(context.Background(), db), "SELECT * FROM users")
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -77,7 +79,7 @@ func TestQuery(t *testing.T) {
 	}
 
 	// Test query with error (invalid SQL)
-	_, err = Query(Context(context.Background(), db), "INVALID SQL")
+	_, err = database.Query(database.Context(context.Background(), db), "INVALID SQL")
 	if err == nil {
 		t.Error("Expected error for invalid SQL")
 	}

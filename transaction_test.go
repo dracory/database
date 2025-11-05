@@ -1,9 +1,11 @@
-package database
+package database_test
 
 import (
 	"context"
 	"database/sql"
 	"testing"
+
+	database "github.com/dracory/database"
 )
 
 // TestTransactionWithContextOr tests the use of transactions with ContextOr
@@ -34,15 +36,15 @@ func TestTransactionWithContextOr(t *testing.T) {
 	}
 
 	// Create a transaction context using Context
-	txCtx := Context(context.Background(), tx)
+	txCtx := database.Context(context.Background(), tx)
 
 	// Test function that simulates a data store method using ContextOr
 	simulateStoreMethod := func(ctx context.Context, db *sql.DB, name, email string) error {
 		// Convert to queryable context, preserving any existing transaction
-		qCtx := ContextOr(ctx, db)
+		qCtx := database.ContextOr(ctx, db)
 
 		// Execute the query using the queryable context
-		_, err := Execute(qCtx, "INSERT INTO users (name, email) VALUES (?, ?)", name, email)
+		_, err := database.Execute(qCtx, "INSERT INTO users (name, email) VALUES (?, ?)", name, email)
 		return err
 	}
 
@@ -121,10 +123,10 @@ func TestTransactionRollback(t *testing.T) {
 	}
 
 	// Create a transaction context
-	txCtx := Context(context.Background(), tx)
+	txCtx := database.Context(context.Background(), tx)
 
 	// Insert some data in the transaction
-	_, err = Execute(txCtx, "INSERT INTO products (name, price) VALUES (?, ?)", "Product 1", 19.99)
+	_, err = database.Execute(txCtx, "INSERT INTO products (name, price) VALUES (?, ?)", "Product 1", 19.99)
 	if err != nil {
 		tx.Rollback()
 		t.Fatalf("Failed to insert data: %v", err)

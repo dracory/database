@@ -1,8 +1,10 @@
-package database
+package database_test
 
 import (
 	"strings"
 	"testing"
+
+	database "github.com/dracory/database"
 
 	// _ "github.com/go-sql-driver/mysql"
 	// _ "github.com/lib/pq"
@@ -10,7 +12,7 @@ import (
 )
 
 func TestOpenWithUnsupportedDriver(t *testing.T) {
-	db, err := Open(Options().
+	db, err := database.Open(database.Options().
 		SetDatabaseType("unsupported_driver").
 		SetDatabaseHost("").
 		SetDatabasePort("").
@@ -32,8 +34,8 @@ func TestOpenWithUnsupportedDriver(t *testing.T) {
 }
 
 func TestOpen(t *testing.T) {
-	db, err := Open(Options().
-		SetDatabaseType(DATABASE_TYPE_SQLITE).
+	db, err := database.Open(database.Options().
+		SetDatabaseType(database.DATABASE_TYPE_SQLITE).
 		SetDatabaseHost("").
 		SetDatabasePort("").
 		SetDatabaseName(":memory:").
@@ -50,8 +52,8 @@ func TestOpen(t *testing.T) {
 }
 
 func TestOpenDatabseIsRequired(t *testing.T) {
-	db, err := Open(Options().
-		SetDatabaseType(DATABASE_TYPE_SQLITE).
+	db, err := database.Open(database.Options().
+		SetDatabaseType(database.DATABASE_TYPE_SQLITE).
 		SetDatabaseHost("").
 		SetDatabasePort("").
 		SetUserName("").
@@ -71,8 +73,8 @@ func TestOpenDatabseIsRequired(t *testing.T) {
 }
 
 func TestOpenHostIsRequired(t *testing.T) {
-	db, err := Open(Options().
-		SetDatabaseType(DATABASE_TYPE_MYSQL).
+	db, err := database.Open(database.Options().
+		SetDatabaseType(database.DATABASE_TYPE_MYSQL).
 		SetDatabaseHost("").
 		SetDatabasePort("").
 		SetDatabaseName(":memory:").
@@ -93,8 +95,8 @@ func TestOpenHostIsRequired(t *testing.T) {
 }
 
 func TestOpenPortIsRequired(t *testing.T) {
-	db, err := Open(Options().
-		SetDatabaseType(DATABASE_TYPE_MYSQL).
+	db, err := database.Open(database.Options().
+		SetDatabaseType(database.DATABASE_TYPE_MYSQL).
 		SetDatabaseHost("localhost").
 		SetDatabasePort("").
 		SetDatabaseName(":memory:").

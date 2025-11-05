@@ -1,10 +1,12 @@
-package database
+package database_test
 
 import (
 	"context"
 	"database/sql"
 	"reflect"
 	"testing"
+
+	database "github.com/dracory/database"
 )
 
 func Test_IsQueryableContext(t *testing.T) {
@@ -23,13 +25,13 @@ func Test_IsQueryableContext(t *testing.T) {
 		},
 		{
 			name: "queryable context",
-			args: args{ctx: Context(context.Background(), nil)},
+			args: args{ctx: database.Context(context.Background(), nil)},
 			want: true,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := IsQueryableContext(tt.args.ctx); got != tt.want {
+			if got := database.IsQueryableContext(tt.args.ctx); got != tt.want {
 				t.Errorf("IsQueryableContext() = %v, want %v", got, tt.want)
 			}
 		})
@@ -38,14 +40,16 @@ func Test_IsQueryableContext(t *testing.T) {
 
 func Test_Context(t *testing.T) {
 	ctxBackground := context.Background()
-	ctx := Context(ctxBackground, nil)
+	ctx := database.Context(ctxBackground, nil)
 
-	if !reflect.DeepEqual(ctx, QueryableContext{Context: ctxBackground, queryable: nil}) {
-		t.Errorf("Context() = %v, want %v", ctx, QueryableContext{Context: ctxBackground, queryable: nil})
+	querableContext := database.NewQueryableContext(ctxBackground, nil)
+
+	if !reflect.DeepEqual(ctx, querableContext) {
+		t.Errorf("Context() = %v, want %v", ctx, querableContext)
 	}
 
-	if !IsQueryableContext(ctx) {
-		t.Error(`IsQueryableContext() = `, IsQueryableContext(ctx), `, want `, true)
+	if !database.IsQueryableContext(ctx) {
+		t.Error(`IsQueryableContext() = `, database.IsQueryableContext(ctx), `, want `, true)
 	}
 }
 
@@ -57,9 +61,9 @@ func TestNewQueryableContextOr(t *testing.T) {
 
 	// Case 1: Regular context should be converted to QueryableContext
 	regularCtx := context.Background()
-	qCtx1 := NewQueryableContextOr(regularCtx, db)
+	qCtx1 := database.NewQueryableContextOr(regularCtx, db)
 
-	if !IsQueryableContext(qCtx1) {
+	if !database.IsQueryableContext(qCtx1) {
 		t.Error("NewQueryableContextOr with regular context did not return a QueryableContext")
 	}
 
@@ -68,8 +72,8 @@ func TestNewQueryableContextOr(t *testing.T) {
 	}
 
 	// Case 2: Existing QueryableContext should be returned as is
-	existingQCtx := NewQueryableContext(context.Background(), db)
-	qCtx2 := NewQueryableContextOr(existingQCtx, db2) // db2 should be ignored
+	existingQCtx := database.NewQueryableContext(context.Background(), db)
+	qCtx2 := database.NewQueryableContextOr(existingQCtx, db2) // db2 should be ignored
 
 	if qCtx2.Queryable() != db {
 		t.Error("NewQueryableContextOr with existing QueryableContext did not preserve the original queryable")
@@ -93,9 +97,9 @@ func TestContextOr(t *testing.T) {
 
 	// Case 1: Regular context should be converted to QueryableContext
 	regularCtx := context.Background()
-	qCtx1 := ContextOr(regularCtx, db)
+	qCtx1 := database.ContextOr(regularCtx, db)
 
-	if !IsQueryableContext(qCtx1) {
+	if !database.IsQueryableContext(qCtx1) {
 		t.Error("ContextOr with regular context did not return a QueryableContext")
 	}
 
@@ -104,8 +108,8 @@ func TestContextOr(t *testing.T) {
 	}
 
 	// Case 2: Existing QueryableContext should be returned as is
-	existingQCtx := Context(context.Background(), db)
-	qCtx2 := ContextOr(existingQCtx, db2) // db2 should be ignored
+	existingQCtx := database.Context(context.Background(), db)
+	qCtx2 := database.ContextOr(existingQCtx, db2) // db2 should be ignored
 
 	if qCtx2.Queryable() != db {
 		t.Error("ContextOr with existing QueryableContext did not preserve the original queryable")

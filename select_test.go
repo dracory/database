@@ -1,8 +1,10 @@
-package database
+package database_test
 
 import (
 	"context"
 	"testing"
+
+	database "github.com/dracory/database"
 
 	"github.com/spf13/cast"
 	_ "modernc.org/sqlite"
@@ -25,7 +27,7 @@ func TestSelectToMapAny(t *testing.T) {
 	}
 
 	// Test nil querier error
-	_, err = SelectToMapAny(Context(context.Background(), nil), "SELECT * FROM users")
+	_, err = database.SelectToMapAny(database.Context(context.Background(), nil), "SELECT * FROM users")
 	if err == nil {
 		t.Error("Expected error for nil querier")
 	} else if err.Error() != "querier (db/tx/conn) is nil" {
@@ -33,7 +35,7 @@ func TestSelectToMapAny(t *testing.T) {
 	}
 
 	// Test successful query
-	result, err := SelectToMapAny(Context(context.Background(), db), "SELECT * FROM users ORDER BY id ASC")
+	result, err := database.SelectToMapAny(database.Context(context.Background(), db), "SELECT * FROM users ORDER BY id ASC")
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -61,7 +63,7 @@ func TestSelectToMapAny(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to delete data: %v", err)
 	}
-	result, err = SelectToMapAny(Context(context.Background(), db), "SELECT * FROM users")
+	result, err = database.SelectToMapAny(database.Context(context.Background(), db), "SELECT * FROM users")
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -70,7 +72,7 @@ func TestSelectToMapAny(t *testing.T) {
 	}
 
 	// Test query with error
-	_, err = SelectToMapAny(Context(context.Background(), db), "INVALID SQL")
+	_, err = database.SelectToMapAny(database.Context(context.Background(), db), "INVALID SQL")
 	if err == nil {
 		t.Error("Expected error for invalid SQL")
 	}
@@ -93,7 +95,7 @@ func TestSelectToMapString(t *testing.T) {
 	}
 
 	// Test nil querier error
-	_, err = SelectToMapString(Context(context.Background(), nil), "SELECT * FROM users")
+	_, err = database.SelectToMapString(database.Context(context.Background(), nil), "SELECT * FROM users")
 	if err == nil {
 		t.Error("Expected error for nil querier")
 	} else if err.Error() != "querier (db/tx/conn) is nil" {
@@ -101,7 +103,7 @@ func TestSelectToMapString(t *testing.T) {
 	}
 
 	// Test successful query
-	result, err := SelectToMapString(Context(context.Background(), db), "SELECT * FROM users ORDER BY id ASC")
+	result, err := database.SelectToMapString(database.Context(context.Background(), db), "SELECT * FROM users ORDER BY id ASC")
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -129,7 +131,7 @@ func TestSelectToMapString(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to delete data: %v", err)
 	}
-	result, err = SelectToMapString(Context(context.Background(), db), "SELECT * FROM users")
+	result, err = database.SelectToMapString(database.Context(context.Background(), db), "SELECT * FROM users")
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -138,13 +140,13 @@ func TestSelectToMapString(t *testing.T) {
 	}
 
 	// Test query with error
-	_, err = SelectToMapString(Context(context.Background(), db), "INVALID SQL")
+	_, err = database.SelectToMapString(database.Context(context.Background(), db), "INVALID SQL")
 	if err == nil {
 		t.Error("Expected error for invalid SQL")
 	}
 }
 
-func createUserTableAndInserTesttData(db QueryableInterface) error {
+func createUserTableAndInserTesttData(db database.QueryableInterface) error {
 	// Create a test table
 	_, err := db.ExecContext(context.Background(), "CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, email TEXT)")
 	if err != nil {
