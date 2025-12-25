@@ -26,6 +26,10 @@ import (
 // ```
 // _ "github.com/lib/pq"
 // ```
+// - pgx add the following includes:
+// ```
+// _ "github.com/jackc/pgx/v5/stdlib"
+// ```
 //
 // Business logic:
 //   - opens the database based on the driver name
@@ -69,7 +73,7 @@ func Open(options openOptionsInterface) (*sql.DB, error) {
 		return nil, errors.New("database for driver " + databaseType + " could not be intialized")
 	}
 
-	if databaseType == DATABASE_TYPE_MYSQL || databaseType == DATABASE_TYPE_POSTGRES {
+	if databaseType == DATABASE_TYPE_MYSQL || databaseType == DATABASE_TYPE_POSTGRES || databaseType == DATABASE_TYPE_PGX {
 		// Maximum Idle Connections
 		db.SetMaxIdleConns(5)
 		// Maximum Open Connections
@@ -113,7 +117,7 @@ func dsn(
 		return dsn
 	}
 
-	if strings.EqualFold(driver, DATABASE_TYPE_POSTGRES) {
+	if strings.EqualFold(driver, DATABASE_TYPE_POSTGRES) || strings.EqualFold(driver, DATABASE_TYPE_PGX) {
 		if sslMode == "" {
 			sslMode = `disable`
 		}
@@ -153,11 +157,12 @@ func (o *openOptions) Verify() error {
 		return errors.New(`database type cannot be empty`)
 	}
 
-	supportedDrivers := []string{DATABASE_TYPE_SQLITE, DATABASE_TYPE_MYSQL, DATABASE_TYPE_POSTGRES}
+	supportedDrivers := []string{DATABASE_TYPE_SQLITE, DATABASE_TYPE_MYSQL, DATABASE_TYPE_POSTGRES, DATABASE_TYPE_PGX}
 
 	if !strings.EqualFold(o.DatabaseType(), DATABASE_TYPE_SQLITE) &&
 		!strings.EqualFold(o.DatabaseType(), DATABASE_TYPE_MYSQL) &&
-		!strings.EqualFold(o.DatabaseType(), DATABASE_TYPE_POSTGRES) {
+		!strings.EqualFold(o.DatabaseType(), DATABASE_TYPE_POSTGRES) &&
+		!strings.EqualFold(o.DatabaseType(), DATABASE_TYPE_PGX) {
 		msg := `driver ` + o.DatabaseType() + ` is not supported.`
 		msg += ` Supported drivers: ` + strings.Join(supportedDrivers, ", ")
 		return errors.New(msg)

@@ -12,7 +12,7 @@ import (
 // It returns the type of the database in the following way:
 //
 //   - "mysql" for MySQL
-//   - "postgres" for PostgreSQL
+//   - "postgres" for PostgreSQL (including pgx driver)
 //   - "sqlite" for SQLite
 //   - "mssql" for Microsoft SQL Server
 //   - the full name of the driver otherwise
@@ -62,7 +62,7 @@ func DatabaseType(q QueryableInterface) string {
 		return DATABASE_TYPE_MYSQL
 	}
 
-	if strings.Contains(driverFullName, DATABASE_TYPE_POSTGRES) || strings.Contains(driverFullName, "pq") {
+	if strings.Contains(driverFullName, DATABASE_TYPE_POSTGRES) || strings.Contains(driverFullName, "pq") || strings.Contains(driverFullName, DATABASE_TYPE_PGX) {
 		return DATABASE_TYPE_POSTGRES
 	}
 
